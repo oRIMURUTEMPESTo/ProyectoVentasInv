@@ -12,16 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('facturas', function (Blueprint $table) {
-            $table->id();
-            $table->integer('id_usuario');
-            $table->integer('id_producto');
-            $table->integer('id_cliente');
-            $table->timestamp('fecha')->useCurrent();
-            $table->decimal('total', 10, 2)->nullable(false);
-            $table->string('estado', 50);
-            $table->foreign('id_usuario')->references('id')->on('usuarios');
-            $table->foreign('id_producto')->references('id')->on('productos');
-            $table->foreign('id_cliente')->references('id')->on('clientes');
+            $table->id();  // Identificador de la factura
+            $table->foreignId('id_usuario')->constrained('usuarios', 'idUsuario');  // Relación con la tabla 'usuarios'
+            $table->foreignId('id_producto')->constrained('productos', 'idproductos');  // Relación con la tabla 'productos'
+            $table->foreignId('id_cliente')->constrained('clientes', 'idCliente');  // Relación con la tabla 'clientes'
+            $table->timestamp('fecha')->useCurrent();  // Fecha de la factura
+            $table->decimal('total', 10, 2);  // Total de la factura
+            $table->string('estado', 50);  // Estado de la factura
+            $table->timestamps();  // Marcas de tiempo
         });
     }
 
