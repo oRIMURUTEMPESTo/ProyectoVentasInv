@@ -17,7 +17,7 @@ class CreateUsuariosTable extends Migration
             $table->string('cel', 15);  // Número de teléfono
             $table->string('rango');  // Rango de usuario
             $table->boolean('estado')->default(1);  // Activo o Inactivo
-            $table->timestamp('fecha_creacion')->useCurrent();  // Fecha de creación
+            $table->timestamp('fecha_creacion')->useCurrent();  // Fecha de creació 
             $table->timestamps();
         });
     }

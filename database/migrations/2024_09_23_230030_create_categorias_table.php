@@ -12,9 +12,8 @@ class CreateCategoriasTable extends Migration
             $table->id('IdCategoria');  // Identificador de la categoría
             $table->string('Nombre');
             $table->text('Descripcion')->nullable();
-            $table->foreignId('IdSubcategoria')->nullable()->constrained('categorias');  // Relación de subcategoría
             $table->timestamp('Fecha')->useCurrent();  // Fecha de creación de la categoría
-            $table->foreignId('IdCreador')->constrained('usuarios');  // Usuario que creó la categoría
+            $table->foreignId('IdCreador')->constrained('usuarios', 'idUsuario')->onDelete('cascade');  // Usuario que creó la categoría
             $table->boolean('Estado')->default(1);  // Estado de la categoría
             $table->timestamps();
         });
