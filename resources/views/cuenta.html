@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Financiero Profesional</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
+            --background-color: #1a1a2e;
+            --text-color: #ffffff;
+            --light-gray: #bdc3c7;
+            --dark-blue: #16213e;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+        nav {
+            background: linear-gradient(135deg, var(--dark-blue), #0f3460);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+        nav a:hover::after {
+            width: 100%;
+        }
+        .container {
+            padding: 100px 30px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .dashboard-card {
+            background: linear-gradient(135deg, #1e3799, #0c2461);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+        .dashboard-card:hover::before {
+            top: -20%;
+            left: -20%;
+        }
+        .dashboard-card:nth-child(2) {
+            border-left-color: var(--secondary-color);
+        }
+        .dashboard-card:nth-child(3) {
+            border-left-color: var(--accent-color);
+        }
+        .dashboard-card:nth-child(4) {
+            border-left-color: #9b59b6;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .dashboard-card h3 {
+            margin-top: 0;
+            color: var(--text-color);
+            font-size: 1.2em;
+        }
+        .dashboard-card p {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--text-color);
+            margin-bottom: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: var(--dark-blue);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+            transition: all 0.3s ease;
+        }
+        th {
+            background-color: #0f3460;
+            color: white;
+            font-weight: 500;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        #searchInput {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background-color: rgba(255,255,255,0.1);
+            color: var(--text-color);
+        }
+        #searchInput:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.2);
+        }
+        .notification {
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+            border-left: 5px solid var(--accent-color);
+            color: #ffffff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .notification:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+        .notification i {
+            margin-right: 15px;
+            font-size: 1.5em;
+            color: var(--accent-color);
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid white;
+            transition: all 0.3s ease;
+        }
+        .user-profile img:hover {
+            transform: scale(1.1);
+        }
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.5s ease;
+        }
+        .btn:hover::before {
+            left: 100%;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background-color: #0f3460;
+            margin: 10% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 350px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .close:hover,
+        .close:focus {
+            color: var(--accent-color);
+        }
+        .modal input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid var(--light-gray);
+            border-radius: 6px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background-color: rgba(255,255,255,0.1);
+            color: var(--text-color);
+        }
+        .modal input:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.2);
+        }
+        .modal button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .modal button:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .table-container {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .show {
+            display: block;
+        }
+        .table-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .table-actions .btn {
+            margin-right: 10px;
+        }
+        .table-actions .btn:last-child {
+            margin-right: 0;
+        }
+        .btn-add {
+            background-color: var(--secondary-color);
+        }
+        .btn-edit {
+            background-color: #f39c12;
+        }
+        .btn-delete {
+            background-color: var(--accent-color);
+        }
+        .btn-search {
+            background-color: #8e44ad;
+        }
+        .critical-process {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 65, 108, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 65, 108, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 65, 108, 0);
+            }
+        }
+        .critical-process h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+        .critical-process p {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div>
+            <a href="#inicio"><i class="fas fa-home"></i> Inicio</a>
+            <a href="#inversion"><i class="fas fa-chart-line"></i> Inversión</a>
+            <a href="#cuenta"><i class="fas fa-wallet"></i> Cuenta</a>
+            <a href="#clientes"><i class="fas fa-users"></i> Clientes</a>
+            <a href="#productos"><i class="fas fa-box"></i> Productos</a>
+            <a href="#prestamos"><i class="fas fa-hand-holding-usd"></i> Préstamos</a>
+        </div>
+        <div class="user-profile">
+            <img src="/api/placeholder/40/40" alt="Perfil de Usuario" id="userProfilePic" style="display: none;">
+            <span id="userName" style="display: none; margin-right: 10px;"></span>
+            <button id="loginBtn" class="btn"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
+            <button id="logoutBtn" class="btn" style="display: none;"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+<h2><i class="fas fa-user-lock"></i> Iniciar Sesión</h2>
+            <input type="text" id="username" placeholder="Nombre de usuario">
+            <input type="password" id="password" placeholder="Contraseña">
+            <button id="submitLogin"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="critical-process">
+            <h3><i class="fas fa-exclamation-triangle"></i> Proceso Crítico: Actualización de Balances</h3>
+            <p>Se está llevando a cabo una actualización importante de los balances de cuentas. Por favor, evite realizar transacciones hasta que se complete el proceso. Tiempo estimado: 30 minutos.</p>
+        </div>
+
+        <div class="dashboard">
+            <div class="dashboard-card">
+                <h3><i class="fas fa-balance-scale"></i> Balance Total</h3>
+                <p>$15,000</p>
+            </div>
+            <div class="dashboard-card">
+                <h3><i class="fas fa-chart-line"></i> Inversiones</h3>
+                <p>$5,000</p>
+            </div>
+            <div class="dashboard-card">
+                <h3><i class="fas fa-hand-holding-usd"></i> Préstamos</h3>
+                <p>$2,000</p>
+            </div>
+            <div class="dashboard-card">
+                <h3><i class="fas fa-piggy-bank"></i> Ahorros</h3>
+                <p>$8,000</p>
+            </div>
+        </div>
+
+        <div class="notification">
+            <i class="fas fa-bell"></i>
+            <span>Recordatorio: Pago de préstamo pendiente para el 15 de este mes.</span>
+        </div>
+
+        <h2>
+            <span><i class="fas fa-exchange-alt"></i> Últimas Transacciones</span>
+            <button id="toggleTransactions" class="btn"><i class="fas fa-eye"></i> Mostrar/Ocultar</button>
+        </h2>
+        <div id="transactionsTable" class="table-container">
+            <div class="table-actions">
+                <input type="text" id="searchInput" placeholder="Buscar transacción...">
+                <div>
+                    <button class="btn btn-add"><i class="fas fa-plus"></i> Agregar</button>
+                    <button class="btn btn-edit"><i class="fas fa-edit"></i> Editar</button>
+                    <button class="btn btn-delete"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Monto</th>
+                        <th>Tipo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-09-25</td>
+                        <td>Depósito de nómina</td>
+                        <td>$1,500</td>
+                        <td>Ingreso</td>
+                    </tr>
+                    <tr>
+                        <td>2024-09-24</td>
+                        <td>Pago de alquiler</td>
+                        <td>$800</td>
+                        <td>Gasto</td>
+                    </tr>
+                    <tr>
+                        <td>2024-09-23</td>
+                        <td>Compra en supermercado</td>
+                        <td>$150</td>
+                        <td>Gasto</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>
+            <span><i class="fas fa-chart-pie"></i> Resumen de Gastos</span>
+            <button id="toggleExpenses" class="btn"><i class="fas fa-eye"></i> Mostrar/Ocultar</button>
+        </h2>
+        <div id="expensesTable" class="table-container">
+            <div class="table-actions">
+                <input type="text" id="searchExpenses" placeholder="Buscar gasto...">
+                <div>
+                    <button class="btn btn-add"><i class="fas fa-plus"></i> Agregar</button>
+                    <button class="btn btn-edit"><i class="fas fa-edit"></i> Editar</button>
+                    <button class="btn btn-delete"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Monto</th>
+                        <th>Porcentaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Vivienda</td>
+                        <td>$800</td>
+                        <td>40%</td>
+                    </tr>
+                    <tr>
+                        <td>Alimentación</td>
+                        <td>$400</td>
+                        <td>20%</td>
+                    </tr>
+                    <tr>
+                        <td>Transporte</td>
+                        <td>$200</td>
+                        <td>10%</td>
+                    </tr>
+                    <tr>
+                        <td>Entretenimiento</td>
+                        <td>$300</td>
+                        <td>15%</td>
+                    </tr>
+                    <tr>
+                        <td>Otros</td>
+                        <td>$300</td>
+                        <td>15%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>
+            <span><i class="fas fa-hand-holding-usd"></i> Préstamos Activos</span>
+            <button id="toggleLoans" class="btn"><i class="fas fa-eye"></i> Mostrar/Ocultar</button>
+        </h2>
+        <div id="loansTable" class="table-container">
+            <div class="table-actions">
+                <input type="text" id="searchLoans" placeholder="Buscar préstamo...">
+                <div>
+                    <button class="btn btn-add"><i class="fas fa-plus"></i> Agregar</button>
+                    <button class="btn btn-edit"><i class="fas fa-edit"></i> Editar</button>
+                    <button class="btn btn-delete"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo de Préstamo</th>
+                        <th>Monto Original</th>
+                        <th>Saldo Pendiente</th>
+                        <th>Tasa de Interés</th>
+                        <th>Fecha de Vencimiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Hipoteca</td>
+                        <td>$200,000</td>
+                        <td>$180,000</td>
+                        <td>3.5%</td>
+                        <td>2045-09-01</td>
+                    </tr>
+                    <tr>
+                        <td>Préstamo Personal</td>
+                        <td>$10,000</td>
+                        <td>$5,000</td>
+                        <td>8%</td>
+                        <td>2026-03-15</td>
+                    </tr>
+                    <tr>
+                        <td>Préstamo Automóvil</td>
+                        <td>$30,000</td>
+                        <td>$20,000</td>
+                        <td>4.5%</td>
+                        <td>2028-12-31</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Login Modal
+        const modal = document.getElementById("loginModal");
+        const loginBtn = document.getElementById("loginBtn");
+        const closeBtn = document.getElementsByClassName("close")[0];
+        const submitLogin = document.getElementById("submitLogin");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const userProfilePic = document.getElementById("userProfilePic");
+        const userName = document.getElementById("userName");
+
+        loginBtn.onclick = () => modal.style.display = "block";
+        closeBtn.onclick = () => modal.style.display = "none";
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+
+        submitLogin.onclick = () => {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            if (username && password) {
+                loginBtn.style.display = "none";
+                logoutBtn.style.display = "inline-block";
+                userProfilePic.style.display = "inline";
+                userName.style.display = "inline";
+                userName.textContent = username;
+                modal.style.display = "none";
+            }
+        };
+
+        logoutBtn.onclick = () => {
+            loginBtn.style.display = "inline-block";
+            logoutBtn.style.display = "none";
+            userProfilePic.style.display = "none";
+            userName.style.display = "none";
+        };
+
+        // Toggle Tables
+        const toggleTables = (tableId, buttonId) => {
+            const table = document.getElementById(tableId);
+            const button = document.getElementById(buttonId);
+            button.onclick = () => {
+                table.classList.toggle("show");
+            };
+        };
+
+        toggleTables("transactionsTable", "toggleTransactions");
+        toggleTables("expensesTable", "toggleExpenses");
+        toggleTables("loansTable", "toggleLoans");
+
+        // Search functionality
+        const setupSearch = (inputId, tableId) => {
+            document.getElementById(inputId).addEventListener("keyup", function() {
+                const filter = this.value.toUpperCase();
+                const table = document.querySelector(`#${tableId} table`);
+                const tr = table.getElementsByTagName("tr");
+
+                for (let i = 1; i < tr.length; i++) {
+                    const td = tr[i].getElementsByTagName("td");
+                    let txtValue = "";
+                    for (let j = 0; j < td.length; j++) {
+                        txtValue += td[j].textContent || td[j].innerText;
+                    }
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            });
+        };
+
+        setupSearch("searchInput", "transactionsTable");
+        setupSearch("searchExpenses", "expensesTable");
+        setupSearch("searchLoans", "loansTable");
+    </script>
+</body>
+</html>
