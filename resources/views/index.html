@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore Admin - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1d2e;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar {
+            background-color: #2a2d3e;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-right: 20px;
+            position: relative;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #3498db;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        .navbar a:hover {
+            color: #3498db;
+        }
+        .navbar a:hover::after {
+            transform: scaleX(1);
+        }
+        .navbar i {
+            margin-right: 8px;
+            font-size: 1.1em;
+        }
+        .login-btn {
+            background-color: #3498db;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+        .login-btn:hover {
+            background-color: #2980b9;
+        }
+        .main-content {
+            padding: 30px;
+            flex-grow: 1;
+        }
+        .section {
+            background-color: #2a2d3e;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .section-header h3 {
+            font-size: 1.2em;
+            color: #3498db;
+        }
+        .show-hide-btn, .add-row-btn {
+            background-color: #3498db;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .show-hide-btn:hover, .add-row-btn:hover {
+            background-color: #2980b9;
+        }
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .invoice-table th, .invoice-table td {
+            border: 1px solid #4a4d5e;
+            padding: 12px;
+            text-align: left;
+        }
+        .invoice-table th {
+            background-color: #3a3d4e;
+            font-weight: bold;
+        }
+        .invoice-table tr:nth-child(even) {
+            background-color: #2f3242;
+        }
+        footer {
+            background-color: #2a2d3e;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px;
+            margin-top: auto;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div>
+            <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+            <a href="cuentas.html"><i class="fas fa-box"></i> Inventario</a>
+            <a href="#"><i class="fas fa-chart-line"></i> Ventas</a>
+            <a href="#"><i class="fas fa-users"></i> Usuarios</a>
+            <a href="#"><i class="fas fa-file-alt"></i> Reportes</a>
+            <a href="#"><i class="fas fa-cog"></i> Configuración</a>
+        </div>
+        <button class="login-btn">INICIAR SESIÓN</button>
+    </nav>
+
+    <div class="main-content">
+        <!-- Sección de Facturas -->
+        <div class="section">
+            <div class="section-header">
+                <h3><i class="fas fa-file-invoice"></i> Facturas Recientes</h3>
+                <div>
+                    <button class="show-hide-btn" id="toggleInvoices1">MOSTRAR/OCULTAR</button>
+                    <button class="add-row-btn" id="addRow1">AGREGAR FILA</button>
+                </div>
+            </div>
+            <table class="invoice-table" id="invoiceTable1" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Nº Factura</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Monto</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td>TechCorp Inc.</td>
+                        <td>2023-09-15</td>
+                        <td>$1,500</td>
+                        <td>
+                            <select>
+                                <option value="Pagada">Pagada</option>
+                                <option value="Pendiente">Pendiente</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td>Innovate Solutions</td>
+                        <td>2023-09-16</td>
+                        <td>$2,300</td>
+                        <td>
+                            <select>
+                                <option value="Pagada">Pagada</option>
+                                <option value="Pendiente">Pendiente</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sección de Préstamos -->
+        <div class="section">
+            <div class="section-header">
+                <h3><i class="fas fa-hand-holding-usd"></i> Préstamos</h3>
+                <div>
+                    <button class="show-hide-btn" id="toggleInvoices2">MOSTRAR/OCULTAR</button>
+                    <button class="add-row-btn" id="addRow2">AGREGAR FILA</button>
+                </div>
+            </div>
+            <table class="invoice-table" id="invoiceTable2" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Nº Préstamo</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Monto</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td>Global Tech</td>
+                        <td>2023-08-20</td>
+                        <td>$3,200</td>
+                        <td>
+                            <select>
+                                <option value="Pagada">Pagada</option>
+                                <option value="Pendiente">Pendiente</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td>Future Gadgets</td>
+                        <td>2023-08-30</td>
+                        <td>$2,500</td>
+                        <td>
+                            <select>
+                                <option value="Pagada">Pagada</option>
+                                <option value="Pendiente">Pendiente</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sección de Personal -->
+        <div class="section">
+            <div class="section-header">
+                <h3><i class="fas fa-user-tie"></i> Personal</h3>
+                <div>
+                    <button class="show-hide-btn" id="togglePersonal">MOSTRAR/OCULTAR</button>
+                    <button class="add-row-btn" id="addRowPersonal">AGREGAR FILA</button>
+                </div>
+            </div>
+            <table class="invoice-table" id="personalTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>ID Personal</th>
+                        <th>Nombre</th>
+                        <th>Posición</th>
+                        <th>Fecha de Ingreso</th>
+                        <th>Salario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td>Juan Pérez</td>
+                        <td>Gerente</td>
+                        <td>2021-01-15</td>
+                        <td>$5,000</td>
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td>Ana Gómez</td>
+                        <td>Asistente</td>
+                        <td>2022-06-10</td>
+                        <td>$3,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 TechStore Admin. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function setupToggle(btnId, tableId) {
+                const toggleBtn = document.getElementById(btnId);
+                const table = document.getElementById(tableId);
+
+                toggleBtn.addEventListener('click', function() {
+                    if (table.style.display === 'none') {
+                        table.style.display = 'table';
+                        toggleBtn.textContent = 'OCULTAR';
+                    } else {
+                        table.style.display = 'none';
+                        toggleBtn.textContent = 'MOSTRAR';
+                    }
+                });
+            }
+
+            function setupAddRow(btnId, tableId) {
+                const addRowBtn = document.getElementById(btnId);
+                const table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+
+                addRowBtn.addEventListener('click', function() {
+                    const newRow = table.insertRow();
+                    const cells = ['-', '-', '-', '-', '-'];
+                    cells.forEach((cellText, index) => {
+                        const cell = newRow.insertCell(index);
+                        if (index === 4) {
+                            const select = document.createElement('select');
+                            const option1 = document.createElement('option');
+                            option1.value = 'Pagada';
+                            option1.text = 'Pagada';
+                            const option2 = document.createElement('option');
+                            option2.value = 'Pendiente';
+                            option2.text = 'Pendiente';
+                            select.add(option1);
+                            select.add(option2);
+                            cell.appendChild(select);
+                        } else {
+                            const input = document.createElement('input');
+                            input.type = 'text';
+                            input.value = cellText;
+                            cell.appendChild(input);
+                        }
+                    });
+                });
+            }
+
+            setupToggle('toggleInvoices1', 'invoiceTable1');
+            setupToggle('toggleInvoices2', 'invoiceTable2');
+            setupToggle('togglePersonal', 'personalTable');
+            setupAddRow('addRow1', 'invoiceTable1');
+            setupAddRow('addRow2', 'invoiceTable2');
+            setupAddRow('addRowPersonal', 'personalTable');
+        });
+    </script>
+</body>
+</html>
