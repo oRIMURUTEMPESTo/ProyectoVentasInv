@@ -1,4 +1,5 @@
-// Migración de categorias
+<?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,9 +12,9 @@ class CreateCategoriasTable extends Migration
             $table->id('IdCategoria');  // Identificador de la categoría
             $table->string('Nombre');
             $table->text('Descripcion')->nullable();
-            $table->timestamp('Fecha')->useCurrent();
-            $table->foreignId('IdCreador')->constrained('usuarios', 'idUsuario')->onDelete('cascade');
-            $table->boolean('Estado')->default(1);
+            $table->timestamp('Fecha')->useCurrent();  // Fecha de creación de la categoría
+            $table->foreignId('IdCreador')->constrained('usuarios', 'idUsuario')->onDelete('cascade');  // Usuario que creó la categoría
+            $table->boolean('Estado')->default(1);  // Estado de la categoría
             $table->timestamps();
         });
     }
