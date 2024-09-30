@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 <?php
 
+=======
+>>>>>>> 3a45772b49edcf78b38425c8eed57015abf97b7b
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +16,7 @@ class CreateCategoriasTable extends Migration
             $table->string('Nombre');
             $table->text('Descripcion')->nullable();
             $table->timestamp('Fecha')->useCurrent();
-            $table->foreignId('IdCreador')->constrained('usuarios', 'idUsuario')->onDelete('cascade');
+            $table->foreignId('IdCreador')->constrained('usuarios', 'idUsuario')->onDelete('cascade');  // Clave foránea
             $table->boolean('Estado')->default(1);
             $table->timestamps();
         });
